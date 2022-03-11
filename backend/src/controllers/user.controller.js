@@ -6,7 +6,7 @@ exports.add = async(req, res)=>{
      const user = new User(req.body);
      await user.save();
 
-     res.status(201).json({ok: true, message: 'Cliente agregado con éxito.'})
+     res.status(201).json({ok: true, message: 'Nutricionista agregado con éxito.'})
  } catch (error) {
     if(error.code === 11000) return res.status(400).json({ok: false, message: 'Verifique la información del usuario.'});
 
