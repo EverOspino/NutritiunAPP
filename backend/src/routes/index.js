@@ -13,6 +13,7 @@ module.exports = () => {
     router.post('/api/v1/add-customer', customerController.addCustomer);
     router.post('/api/v1/add-psychological-habit', customerController.addPsychologicalHabit);
     router.post('/api/v1/add-feeding-habits', customerController.addFeedingHabits);
+    router.get('/api/v1/list-customer', customerController.listCustomer);
     
     return router;
 }

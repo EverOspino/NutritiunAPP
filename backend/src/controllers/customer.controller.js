@@ -64,3 +64,13 @@ exports.addFeedingHabits = async (req, res)=>{
 exports.add = async (req, res)=>{
 
 }
+
+exports.listCustomer = async (req, res)=>{
+    try{
+        const customer = await Customer.find({});
+        res.status(200).json({ok: true, message: "Se hizo la petición la manera correcta.",customer});
+    
+    } catch (error) {
+        res.status(400).json({ok: false, error});
+    }
+}

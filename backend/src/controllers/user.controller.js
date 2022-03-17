@@ -60,9 +60,9 @@ exports.register = async (req, res)=>{
             if(exists) return res.status.json({ok: false, message: 'El usuario ya existe.'});
 
             await newUser.save();
-            res.json({ok: true, message: 'El asuario fue registrado'});
+            res.json({ok: true, message: 'El asuario fue registrado', newUser});
         }
     } catch (error) {
-        res.status.json({ok: false, error});
+        res.status(400).json({ok: false, error});
     }
 }
