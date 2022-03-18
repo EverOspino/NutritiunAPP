@@ -6,6 +6,7 @@ const customerSchema = new Schema({
     nutritionistId: {type: String, trim: true, required: true},
     name: {type: String, trim: true, required: true},
     lastName: {type: String, trim: true, required: true},
+    sex: {type: String, trim: true, required: true},
     age: {type: Number, required: true},
     evaluationDate: {type: Date, default: Date.now()},
     hoursWorking: {type: Number},

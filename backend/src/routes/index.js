@@ -6,7 +6,7 @@ const collectionController = require('../controllers/collection.controller.js');
 const router = express.Router();
 
 module.exports = () => {
-    router.get('/api/v1/auth', userController.auth); //Autenticar nutricionista
+    router.post('/api/v1/auth', userController.auth); //Autenticar nutricionista
     router.post('/api/v1/register', userController.register); //Registrar nutricionista
     router.get('/api/v1/list', userController.list); //Listar todos los nutricionistas
 
