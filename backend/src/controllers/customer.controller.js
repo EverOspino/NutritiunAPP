@@ -1,5 +1,6 @@
 const Customer = require('../models/customer.model.js')
 const express = require('express');
+const { default: mongoose } = require('mongoose');
 
 exports.addCustomer = async (req, res) => {
     try {
@@ -21,39 +22,35 @@ exports.listID = async (req, res, _id) => {
     }
 }
 exports.addPsychologicalHabit = async (req, res) => {
-    try {
-        const body = req.body;
-        const _id = body._id;
-        // console.log(body._id);
-        // console.log(body.psychologicalHabit);
 
-        // const psychologicalHabit = JSON.parse(body.psychologicalHabit);
-        // console.log(psychologicalHabit);
-        const customer = await Customer.findById({ _id });
-        console.log(customer);
-
-        body.psychologicalHabit.forEach(habit => {
-            console.log(habit.idHabit);
-            Customer.updateOne(
-                {
-                    _id: _id
-                },{
-                    $push: {
-                        psychologicalHabit: {
-                            idHabit: habit.idHabit,
-                            timesADay: habit.timesADay,
-                            descriptionHabit: habit.descriptionHabit
-                        }
-                    }
+    const { _id, psychologicalHabit } = req.body;
+    let error;
+    
+    psychologicalHabit.forEach(habit => {
+        console.log(habit.idHabit);
+        Customer.updateOne(
+            {
+                _id
+            }, {
+                $push: {
+                "psychologicalHabit": {
+                    idHabit: habit.idHabit,
+                    timesADay: habit.timesADay,
+                    descriptionHabit: habit.descriptionHabit
                 }
-            );
-        });
-
-        res.status(201).json({ ok: true, message: "Se agregó correctamente las hábitos alimenticios.", customer})
-    } catch (error) {
-        if (error.code === 11000) return res.status(400).json({ ok: false, message: 'Verifique la información del usuario.' });
-
-        res.status(400).json({ ok: false, message: 'No se pudo ingresar al cliente.'});
+            }
+        }, (err) => {
+            if (err) {
+                error = err;
+            }
+        }
+        );
+    });
+    
+    if (error) {
+        return res.status(400).json({ ok: false, message: 'No se pudo ingresar al cliente.' });
+    } else {
+        res.status(201).json({ ok: true, message: "Se agregó correctamente las hábitos alimenticios."})
     }
 }
 
@@ -91,5 +88,15 @@ exports.listCustomer = async (req, res) => {
 
     } catch (error) {
         res.status(400).json({ ok: false, error });
+    }
+}
+
+exports.idCustomer = async(req, res)=>{
+    try {
+        const {_id} = req.body;
+        const customer = await Customer.findById({ _id });
+        res.status(200).json({ok: true, message: "El cliente fue encontra exitosamente.", customer});
+    } catch (error) {
+        res.status(400).json({ok: false, message: "No se pudo encontrar al cliente.", customer});
     }
 }

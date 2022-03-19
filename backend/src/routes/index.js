@@ -11,9 +11,10 @@ module.exports = () => {
     router.get('/api/v1/list', userController.list); //Listar todos los nutricionistas
 
     router.post('/api/v1/add-customer', customerController.addCustomer);
-    router.post('/api/v1/add-psychological-habit', customerController.addPsychologicalHabit);
+    router.put('/api/v1/add-psychological-habit', customerController.addPsychologicalHabit);
     router.post('/api/v1/add-feeding-habits', customerController.addFeedingHabits);
     router.get('/api/v1/list-customer', customerController.listCustomer);
+    router.get('/api/v1/id-customer', customerController.idCustomer);
     
     router.get('/api/v1/list-collection', collectionController.list);
 
