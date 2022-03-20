@@ -2,6 +2,17 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+/* 
+    LISTA DE TIEMPOS:
+        Semana = sem
+        Al día = dia
+        Mes = mes
+
+    MANEJO DE SEXO:
+        Masculino = M
+        Femenino = F
+*/
+
 const customerSchema = new Schema({
     nutritionistId: {type: String, trim: true, required: true},
     name: {type: String, trim: true, required: true},
@@ -17,17 +28,22 @@ const customerSchema = new Schema({
     psychologicalHabit: [
         {
             idHabit: {type: String, trim: true},
-            timesADay: {type: Number},
+            typeTimes: {type: String, trim: true, default: "dia"},
+            times: {type: Number},
             descriptionHabit: {type: String, trim: true}
         }
     ],
     feedingHabits: [
         {
             idHabit: {type: String, trim: true},
-            timesAWeek: {type: Number},
+            typeTimes: {type: String, trim: true, default: "sem"},
+            times: {type: Number},
             descriptionHabit: {type: String, trim: true}
         }
     ],
+    allergies: {type: String, trim: true},
+    supplements: {type: String, trim: true},
+    intolerances: {type: String, trim: true},
     generalDescription: {type: String, trim: true}
 })
 

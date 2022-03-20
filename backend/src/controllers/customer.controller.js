@@ -25,17 +25,18 @@ exports.addPsychologicalHabit = async (req, res) => {
 
     const { _id, psychologicalHabit } = req.body;
     let error;
-    
+
     psychologicalHabit.forEach(habit => {
         console.log(habit.idHabit);
         Customer.updateOne(
             {
                 _id
             }, {
-                $push: {
+            $push: {
                 "psychologicalHabit": {
                     idHabit: habit.idHabit,
-                    timesADay: habit.timesADay,
+                    typeTimes: habit.typeTimes,
+                    times: habit.times,
                     descriptionHabit: habit.descriptionHabit
                 }
             }
@@ -46,39 +47,39 @@ exports.addPsychologicalHabit = async (req, res) => {
         }
         );
     });
-    
+
     if (error) {
-        return res.status(400).json({ ok: false, message: 'No se pudo ingresar al cliente.' });
+        return res.status(400).json({ ok: false, message: 'No se pudo ingresar los hábitos alimenticios.' });
     } else {
-        res.status(201).json({ ok: true, message: "Se agregó correctamente las hábitos alimenticios."})
+        res.status(201).json({ ok: true, message: "Se agregó correctamente las hábitos alimenticios." })
     }
 }
 
 exports.addFeedingHabits = async (req, res) => {
-    try {
-        const body = req.body;
+    const { _id, feedingHabits } = req.body;
+    let error;
 
-        const feedingHabits = JSON.parse(body.feedingHabits);
-        feedingHabits.forEach(habit => {
-            Customer.updateOne({ _id: body._id }, {
-                $push: {
-                    'feedingHabits': {
-                        idHabit: habit.idHabit,
-                        timesAWeek: habit.timesAWeek,
-                        descriptionHabit: habit.descriptionHabit
-                    }
+    feedingHabits.forEach(habit => {
+        Customer.updateOne({
+            _id
+        }, {
+            $push: {
+                'feedingHabits': {
+                    idHabit: habit.idHabit,
+                    typeTimes: habit.typeTimes,
+                    times: habit.times,
+                    descriptionHabit: habit.descriptionHabit
                 }
-            })
+            }
+        }, (err) => {
+            if (err) error = err;
         })
-    } catch (error) {
-        if (error.code === 11000) return res.status(400).json({ ok: false, message: 'Verifique la información del usuario.' });
-
-        res.status(400).json({ ok: false, message: 'No se pudo ingresar al cliente.' });
+    });
+    if (error) {
+        return res.status(400).json({ ok: false, message: 'No se pudo ingresar los hábitos alimenticios.' });
+    } else {
+        res.status(201).json({ ok: true, message: "Se agregó correctamente las hábitos alimenticios." });
     }
-}
-
-exports.add = async (req, res) => {
-
 }
 
 exports.listCustomer = async (req, res) => {
@@ -91,12 +92,12 @@ exports.listCustomer = async (req, res) => {
     }
 }
 
-exports.idCustomer = async(req, res)=>{
+exports.idCustomer = async (req, res) => {
     try {
-        const {_id} = req.body;
+        const { _id } = req.body;
         const customer = await Customer.findById({ _id });
-        res.status(200).json({ok: true, message: "El cliente fue encontra exitosamente.", customer});
+        res.status(200).json({ ok: true, message: "El cliente fue encontra exitosamente.", customer });
     } catch (error) {
-        res.status(400).json({ok: false, message: "No se pudo encontrar al cliente.", customer});
+        res.status(400).json({ ok: false, message: "No se pudo encontrar al cliente.", customer });
     }
 }
