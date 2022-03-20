@@ -23,7 +23,7 @@ exports.listID = async (req, res, _id) => {
 }
 exports.addPsychologicalHabit = async (req, res) => {
 
-    const { _id, psychologicalHabit } = req.body;
+    const { _id, psychologicalHabit, allergies, supplements, intolerances } = req.body;
     let error;
 
     psychologicalHabit.forEach(habit => {
@@ -47,6 +47,9 @@ exports.addPsychologicalHabit = async (req, res) => {
         }
         );
     });
+    Customer.updateOne({_id}, { $set: { 'allergies': allergies}}, (err)=>{ if(error) error = err})
+    Customer.updateOne({_id}, { $set: { 'supplements': supplements}}, (err)=>{ if(error) error = err})
+    Customer.updateOne({_id}, { $set: { 'intolerances': intolerances}}, (err)=>{ if(error) error = err})
 
     if (error) {
         return res.status(400).json({ ok: false, message: 'No se pudo ingresar los hábitos alimenticios.' });
